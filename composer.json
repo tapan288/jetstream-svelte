@@ -1,16 +1,25 @@
 {
-    "name": "laravel/jetstream",
-    "description": "Tailwind scaffolding for the Laravel framework.",
-    "keywords": ["laravel", "tailwind", "auth"],
+    "name": "tapansharma/jetstream-svelte",
+    "description": "Svelte/Tailwind scaffolding for the Laravel framework.",
+    "keywords": [
+        "laravel",
+        "svelte",
+        "tailwind",
+        "auth"
+    ],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/laravel/jetstream/issues",
-        "source": "https://github.com/laravel/jetstream"
+        "issues": "https://github.com/tapan288/jetstream-svelte/issues",
+        "source": "https://github.com/tapan288/jetstream-svelte"
     },
     "authors": [
         {
             "name": "Taylor Otwell",
             "email": "taylor@laravel.com"
+        },
+        {
+            "name": "Tapan Sharma",
+            "email": "tapansharma69@gmail.com"
         }
     ],
     "require": {
