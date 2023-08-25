@@ -2,11 +2,11 @@
 
 namespace Laravel\Jetstream\Http\Middleware;
 
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Laravel\Jetstream\Jetstream;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Session;
 
 class ShareInertiaData
 {
@@ -25,8 +25,8 @@ class ShareInertiaData
 
                 return [
                     'canCreateTeams' => $user &&
-                                        Jetstream::userHasTeamFeatures($user) &&
-                                        Gate::forUser($user)->check('create', Jetstream::newTeamModel()),
+                    Jetstream::userHasTeamFeatures($user) &&
+                    Gate::forUser($user)->check('create', Jetstream::newTeamModel()),
                     'canManageTwoFactorAuthentication' => Features::canManageTwoFactorAuthentication(),
                     'canUpdatePassword' => Features::enabled(Features::updatePasswords()),
                     'canUpdateProfileInformation' => Features::canUpdateProfileInformation(),
@@ -41,7 +41,7 @@ class ShareInertiaData
             },
             'auth' => [
                 'user' => function () use ($request) {
-                    if (! $user = $request->user()) {
+                    if (!$user = $request->user()) {
                         return;
                     }
 
@@ -55,7 +55,7 @@ class ShareInertiaData
                         'all_teams' => $userHasTeamFeatures ? $user->allTeams()->values() : null,
                     ]), [
                         'two_factor_enabled' => Features::enabled(Features::twoFactorAuthentication())
-                            && ! is_null($user->two_factor_secret),
+                        && !is_null($user->two_factor_secret),
                     ]);
                 },
             ],

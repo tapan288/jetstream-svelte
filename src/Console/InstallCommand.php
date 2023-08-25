@@ -47,8 +47,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     public function handle()
     {
-        if (! in_array($this->argument('stack'), ['inertia', 'livewire'])) {
-            $this->components->error('Invalid stack. Supported stacks are [inertia] and [livewire].');
+        if (!in_array($this->argument('stack'), ['inertia'])) {
+            $this->components->error('Invalid stack. Supported stack is [inertia].');
 
             return 1;
         }
@@ -89,19 +89,15 @@ class InstallCommand extends Command implements PromptsForMissingInput
         }
 
         // Install Stack...
-        if ($this->argument('stack') === 'livewire') {
-            if (! $this->installLivewireStack()) {
-                return 1;
-            }
-        } elseif ($this->argument('stack') === 'inertia') {
-            if (! $this->installInertiaStack()) {
+        if ($this->argument('stack') === 'inertia') {
+            if (!$this->installInertiaStack()) {
                 return 1;
             }
         }
 
         // Emails...
         (new Filesystem)->ensureDirectoryExists(resource_path('views/emails'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/resources/views/emails', resource_path('views/emails'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/resources/views/emails', resource_path('views/emails'));
 
         // Tests...
         $stubs = $this->getTestStubsPath();
@@ -111,20 +107,20 @@ class InstallCommand extends Command implements PromptsForMissingInput
                 $this->removeComposerDevPackages(['phpunit/phpunit']);
             }
 
-            if (! $this->requireComposerDevPackages(['pestphp/pest:^2.0', 'pestphp/pest-plugin-laravel:^2.0'])) {
+            if (!$this->requireComposerDevPackages(['pestphp/pest:^2.0', 'pestphp/pest-plugin-laravel:^2.0'])) {
                 return 1;
             }
 
-            copy($stubs.'/Pest.php', base_path('tests/Pest.php'));
-            copy($stubs.'/ExampleTest.php', base_path('tests/Feature/ExampleTest.php'));
-            copy($stubs.'/ExampleUnitTest.php', base_path('tests/Unit/ExampleTest.php'));
+            copy($stubs . '/Pest.php', base_path('tests/Pest.php'));
+            copy($stubs . '/ExampleTest.php', base_path('tests/Feature/ExampleTest.php'));
+            copy($stubs . '/ExampleUnitTest.php', base_path('tests/Unit/ExampleTest.php'));
         }
 
-        copy($stubs.'/AuthenticationTest.php', base_path('tests/Feature/AuthenticationTest.php'));
-        copy($stubs.'/EmailVerificationTest.php', base_path('tests/Feature/EmailVerificationTest.php'));
-        copy($stubs.'/PasswordConfirmationTest.php', base_path('tests/Feature/PasswordConfirmationTest.php'));
-        copy($stubs.'/PasswordResetTest.php', base_path('tests/Feature/PasswordResetTest.php'));
-        copy($stubs.'/RegistrationTest.php', base_path('tests/Feature/RegistrationTest.php'));
+        copy($stubs . '/AuthenticationTest.php', base_path('tests/Feature/AuthenticationTest.php'));
+        copy($stubs . '/EmailVerificationTest.php', base_path('tests/Feature/EmailVerificationTest.php'));
+        copy($stubs . '/PasswordConfirmationTest.php', base_path('tests/Feature/PasswordConfirmationTest.php'));
+        copy($stubs . '/PasswordResetTest.php', base_path('tests/Feature/PasswordResetTest.php'));
+        copy($stubs . '/RegistrationTest.php', base_path('tests/Feature/RegistrationTest.php'));
     }
 
     /**
@@ -134,7 +130,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     protected function configureSession()
     {
-        if (! class_exists('CreateSessionsTable')) {
+        if (!class_exists('CreateSessionsTable')) {
             try {
                 $this->call('session:table');
             } catch (Exception $e) {
@@ -155,16 +151,16 @@ class InstallCommand extends Command implements PromptsForMissingInput
     protected function installLivewireStack()
     {
         // Install Livewire...
-        if (! $this->requireComposerPackages('livewire/livewire:^2.11')) {
+        if (!$this->requireComposerPackages('livewire/livewire:^2.11')) {
             return false;
         }
 
         // Sanctum...
         (new Process([$this->phpBinary(), 'artisan', 'vendor:publish', '--provider=Laravel\Sanctum\SanctumServiceProvider', '--force'], base_path()))
-                ->setTimeout(null)
-                ->run(function ($type, $output) {
-                    $this->output->write($output);
-                });
+            ->setTimeout(null)
+            ->run(function ($type, $output) {
+                $this->output->write($output);
+            });
 
         // Update Configuration...
         $this->replaceInFile('inertia', 'livewire', config_path('jetstream.php'));
@@ -184,9 +180,9 @@ class InstallCommand extends Command implements PromptsForMissingInput
         });
 
         // Tailwind Configuration...
-        copy(__DIR__.'/../../stubs/livewire/tailwind.config.js', base_path('tailwind.config.js'));
-        copy(__DIR__.'/../../stubs/livewire/postcss.config.js', base_path('postcss.config.js'));
-        copy(__DIR__.'/../../stubs/livewire/vite.config.js', base_path('vite.config.js'));
+        copy(__DIR__ . '/../../stubs/livewire/tailwind.config.js', base_path('tailwind.config.js'));
+        copy(__DIR__ . '/../../stubs/livewire/postcss.config.js', base_path('postcss.config.js'));
+        copy(__DIR__ . '/../../stubs/livewire/vite.config.js', base_path('vite.config.js'));
 
         // Directories...
         (new Filesystem)->ensureDirectoryExists(app_path('Actions/Fortify'));
@@ -203,78 +199,79 @@ class InstallCommand extends Command implements PromptsForMissingInput
         (new Filesystem)->deleteDirectory(resource_path('sass'));
 
         // Terms Of Service / Privacy Policy...
-        copy(__DIR__.'/../../stubs/resources/markdown/terms.md', resource_path('markdown/terms.md'));
-        copy(__DIR__.'/../../stubs/resources/markdown/policy.md', resource_path('markdown/policy.md'));
+        copy(__DIR__ . '/../../stubs/resources/markdown/terms.md', resource_path('markdown/terms.md'));
+        copy(__DIR__ . '/../../stubs/resources/markdown/policy.md', resource_path('markdown/policy.md'));
 
         // Service Providers...
-        copy(__DIR__.'/../../stubs/app/Providers/JetstreamServiceProvider.php', app_path('Providers/JetstreamServiceProvider.php'));
+        copy(__DIR__ . '/../../stubs/app/Providers/JetstreamServiceProvider.php', app_path('Providers/JetstreamServiceProvider.php'));
         $this->installServiceProviderAfter('FortifyServiceProvider', 'JetstreamServiceProvider');
 
         // Models...
-        copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
+        copy(__DIR__ . '/../../stubs/app/Models/User.php', app_path('Models/User.php'));
 
         // Factories...
-        copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
+        copy(__DIR__ . '/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
 
         // Actions...
-        copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Fortify/UpdateUserProfileInformation.php', app_path('Actions/Fortify/UpdateUserProfileInformation.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/DeleteUser.php', app_path('Actions/Jetstream/DeleteUser.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Fortify/UpdateUserProfileInformation.php', app_path('Actions/Fortify/UpdateUserProfileInformation.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Jetstream/DeleteUser.php', app_path('Actions/Jetstream/DeleteUser.php'));
 
         // Components...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/livewire/resources/views/components', resource_path('views/components'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/livewire/resources/views/components', resource_path('views/components'));
 
         // View Components...
-        copy(__DIR__.'/../../stubs/livewire/app/View/Components/AppLayout.php', app_path('View/Components/AppLayout.php'));
-        copy(__DIR__.'/../../stubs/livewire/app/View/Components/GuestLayout.php', app_path('View/Components/GuestLayout.php'));
+        copy(__DIR__ . '/../../stubs/livewire/app/View/Components/AppLayout.php', app_path('View/Components/AppLayout.php'));
+        copy(__DIR__ . '/../../stubs/livewire/app/View/Components/GuestLayout.php', app_path('View/Components/GuestLayout.php'));
 
         // Layouts...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/livewire/resources/views/layouts', resource_path('views/layouts'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/livewire/resources/views/layouts', resource_path('views/layouts'));
 
         // Single Blade Views...
-        copy(__DIR__.'/../../stubs/livewire/resources/views/dashboard.blade.php', resource_path('views/dashboard.blade.php'));
-        copy(__DIR__.'/../../stubs/livewire/resources/views/navigation-menu.blade.php', resource_path('views/navigation-menu.blade.php'));
-        copy(__DIR__.'/../../stubs/livewire/resources/views/terms.blade.php', resource_path('views/terms.blade.php'));
-        copy(__DIR__.'/../../stubs/livewire/resources/views/policy.blade.php', resource_path('views/policy.blade.php'));
+        copy(__DIR__ . '/../../stubs/livewire/resources/views/dashboard.blade.php', resource_path('views/dashboard.blade.php'));
+        copy(__DIR__ . '/../../stubs/livewire/resources/views/navigation-menu.blade.php', resource_path('views/navigation-menu.blade.php'));
+        copy(__DIR__ . '/../../stubs/livewire/resources/views/terms.blade.php', resource_path('views/terms.blade.php'));
+        copy(__DIR__ . '/../../stubs/livewire/resources/views/policy.blade.php', resource_path('views/policy.blade.php'));
 
         // Other Views...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/livewire/resources/views/api', resource_path('views/api'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/livewire/resources/views/profile', resource_path('views/profile'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/livewire/resources/views/auth', resource_path('views/auth'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/livewire/resources/views/api', resource_path('views/api'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/livewire/resources/views/profile', resource_path('views/profile'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/livewire/resources/views/auth', resource_path('views/auth'));
 
         // Routes...
         $this->replaceInFile('auth:api', 'auth:sanctum', base_path('routes/api.php'));
 
-        if (! Str::contains(file_get_contents(base_path('routes/web.php')), "'/dashboard'")) {
+        if (!Str::contains(file_get_contents(base_path('routes/web.php')), "'/dashboard'")) {
             (new Filesystem)->append(base_path('routes/web.php'), $this->livewireRouteDefinition());
         }
 
         // Assets...
-        copy(__DIR__.'/../../stubs/resources/css/app.css', resource_path('css/app.css'));
-        copy(__DIR__.'/../../stubs/livewire/resources/js/app.js', resource_path('js/app.js'));
+        copy(__DIR__ . '/../../stubs/resources/css/app.css', resource_path('css/app.css'));
+        copy(__DIR__ . '/../../stubs/livewire/resources/js/app.js', resource_path('js/app.js'));
 
         // Tests...
         $stubs = $this->getTestStubsPath();
 
-        copy($stubs.'/livewire/ApiTokenPermissionsTest.php', base_path('tests/Feature/ApiTokenPermissionsTest.php'));
-        copy($stubs.'/livewire/BrowserSessionsTest.php', base_path('tests/Feature/BrowserSessionsTest.php'));
-        copy($stubs.'/livewire/CreateApiTokenTest.php', base_path('tests/Feature/CreateApiTokenTest.php'));
-        copy($stubs.'/livewire/DeleteAccountTest.php', base_path('tests/Feature/DeleteAccountTest.php'));
-        copy($stubs.'/livewire/DeleteApiTokenTest.php', base_path('tests/Feature/DeleteApiTokenTest.php'));
-        copy($stubs.'/livewire/ProfileInformationTest.php', base_path('tests/Feature/ProfileInformationTest.php'));
-        copy($stubs.'/livewire/TwoFactorAuthenticationSettingsTest.php', base_path('tests/Feature/TwoFactorAuthenticationSettingsTest.php'));
-        copy($stubs.'/livewire/UpdatePasswordTest.php', base_path('tests/Feature/UpdatePasswordTest.php'));
+        copy($stubs . '/livewire/ApiTokenPermissionsTest.php', base_path('tests/Feature/ApiTokenPermissionsTest.php'));
+        copy($stubs . '/livewire/BrowserSessionsTest.php', base_path('tests/Feature/BrowserSessionsTest.php'));
+        copy($stubs . '/livewire/CreateApiTokenTest.php', base_path('tests/Feature/CreateApiTokenTest.php'));
+        copy($stubs . '/livewire/DeleteAccountTest.php', base_path('tests/Feature/DeleteAccountTest.php'));
+        copy($stubs . '/livewire/DeleteApiTokenTest.php', base_path('tests/Feature/DeleteApiTokenTest.php'));
+        copy($stubs . '/livewire/ProfileInformationTest.php', base_path('tests/Feature/ProfileInformationTest.php'));
+        copy($stubs . '/livewire/TwoFactorAuthenticationSettingsTest.php', base_path('tests/Feature/TwoFactorAuthenticationSettingsTest.php'));
+        copy($stubs . '/livewire/UpdatePasswordTest.php', base_path('tests/Feature/UpdatePasswordTest.php'));
 
         // Teams...
         if ($this->option('teams')) {
             $this->installLivewireTeamStack();
         }
 
-        if (! $this->option('dark')) {
-            $this->removeDarkClasses((new Finder)
-                ->in(resource_path('views'))
-                ->name('*.blade.php')
-                ->filter(fn ($file) => $file->getPathname() !== resource_path('views/welcome.blade.php'))
+        if (!$this->option('dark')) {
+            $this->removeDarkClasses(
+                (new Finder)
+                    ->in(resource_path('views'))
+                    ->name('*.blade.php')
+                    ->filter(fn($file) => $file->getPathname() !== resource_path('views/welcome.blade.php'))
             );
         }
 
@@ -303,18 +300,18 @@ class InstallCommand extends Command implements PromptsForMissingInput
         (new Filesystem)->ensureDirectoryExists(resource_path('views/teams'));
 
         // Other Views...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/livewire/resources/views/teams', resource_path('views/teams'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/livewire/resources/views/teams', resource_path('views/teams'));
 
         // Tests...
         $stubs = $this->getTestStubsPath();
 
-        copy($stubs.'/livewire/CreateTeamTest.php', base_path('tests/Feature/CreateTeamTest.php'));
-        copy($stubs.'/livewire/DeleteTeamTest.php', base_path('tests/Feature/DeleteTeamTest.php'));
-        copy($stubs.'/livewire/InviteTeamMemberTest.php', base_path('tests/Feature/InviteTeamMemberTest.php'));
-        copy($stubs.'/livewire/LeaveTeamTest.php', base_path('tests/Feature/LeaveTeamTest.php'));
-        copy($stubs.'/livewire/RemoveTeamMemberTest.php', base_path('tests/Feature/RemoveTeamMemberTest.php'));
-        copy($stubs.'/livewire/UpdateTeamMemberRoleTest.php', base_path('tests/Feature/UpdateTeamMemberRoleTest.php'));
-        copy($stubs.'/livewire/UpdateTeamNameTest.php', base_path('tests/Feature/UpdateTeamNameTest.php'));
+        copy($stubs . '/livewire/CreateTeamTest.php', base_path('tests/Feature/CreateTeamTest.php'));
+        copy($stubs . '/livewire/DeleteTeamTest.php', base_path('tests/Feature/DeleteTeamTest.php'));
+        copy($stubs . '/livewire/InviteTeamMemberTest.php', base_path('tests/Feature/InviteTeamMemberTest.php'));
+        copy($stubs . '/livewire/LeaveTeamTest.php', base_path('tests/Feature/LeaveTeamTest.php'));
+        copy($stubs . '/livewire/RemoveTeamMemberTest.php', base_path('tests/Feature/RemoveTeamMemberTest.php'));
+        copy($stubs . '/livewire/UpdateTeamMemberRoleTest.php', base_path('tests/Feature/UpdateTeamMemberRoleTest.php'));
+        copy($stubs . '/livewire/UpdateTeamNameTest.php', base_path('tests/Feature/UpdateTeamNameTest.php'));
 
         $this->ensureApplicationIsTeamCompatible();
     }
@@ -349,38 +346,38 @@ EOF;
     protected function installInertiaStack()
     {
         // Install Inertia...
-        if (! $this->requireComposerPackages('inertiajs/inertia-laravel:^0.6.8', 'tightenco/ziggy:^1.0')) {
+        if (!$this->requireComposerPackages('inertiajs/inertia-laravel:^0.6.8', 'tightenco/ziggy:^1.0')) {
             return false;
         }
 
         // Install NPM packages...
         $this->updateNodePackages(function ($packages) {
             return [
-                '@inertiajs/vue3' => '^1.0.0',
+                // '@inertiajs/vue3' => '^1.0.0',
                 '@tailwindcss/forms' => '^0.5.2',
                 '@tailwindcss/typography' => '^0.5.2',
-                '@vitejs/plugin-vue' => '^4.0.0',
+                // '@vitejs/plugin-vue' => '^4.0.0',
                 'autoprefixer' => '^10.4.7',
                 'postcss' => '^8.4.14',
                 'tailwindcss' => '^3.1.0',
-                'vue' => '^3.2.31',
+                // 'vue' => '^3.2.31',
             ] + $packages;
         });
 
         // Sanctum...
         (new Process([$this->phpBinary(), 'artisan', 'vendor:publish', '--provider=Laravel\Sanctum\SanctumServiceProvider', '--force'], base_path()))
-                ->setTimeout(null)
-                ->run(function ($type, $output) {
-                    $this->output->write($output);
-                });
+            ->setTimeout(null)
+            ->run(function ($type, $output) {
+                $this->output->write($output);
+            });
 
         // Tailwind Configuration...
-        copy(__DIR__.'/../../stubs/inertia/tailwind.config.js', base_path('tailwind.config.js'));
-        copy(__DIR__.'/../../stubs/inertia/postcss.config.js', base_path('postcss.config.js'));
-        copy(__DIR__.'/../../stubs/inertia/vite.config.js', base_path('vite.config.js'));
+        copy(__DIR__ . '/../../stubs/inertia/tailwind.config.js', base_path('tailwind.config.js'));
+        copy(__DIR__ . '/../../stubs/inertia/postcss.config.js', base_path('postcss.config.js'));
+        copy(__DIR__ . '/../../stubs/inertia/vite.config.js', base_path('vite.config.js'));
 
         // jsconfig.json...
-        copy(__DIR__.'/../../stubs/inertia/jsconfig.json', base_path('jsconfig.json'));
+        copy(__DIR__ . '/../../stubs/inertia/jsconfig.json', base_path('jsconfig.json'));
 
         // Directories...
         (new Filesystem)->ensureDirectoryExists(app_path('Actions/Fortify'));
@@ -398,11 +395,11 @@ EOF;
         (new Filesystem)->deleteDirectory(resource_path('sass'));
 
         // Terms Of Service / Privacy Policy...
-        copy(__DIR__.'/../../stubs/resources/markdown/terms.md', resource_path('markdown/terms.md'));
-        copy(__DIR__.'/../../stubs/resources/markdown/policy.md', resource_path('markdown/policy.md'));
+        copy(__DIR__ . '/../../stubs/resources/markdown/terms.md', resource_path('markdown/terms.md'));
+        copy(__DIR__ . '/../../stubs/resources/markdown/policy.md', resource_path('markdown/policy.md'));
 
         // Service Providers...
-        copy(__DIR__.'/../../stubs/app/Providers/JetstreamServiceProvider.php', app_path('Providers/JetstreamServiceProvider.php'));
+        copy(__DIR__ . '/../../stubs/app/Providers/JetstreamServiceProvider.php', app_path('Providers/JetstreamServiceProvider.php'));
 
         $this->installServiceProviderAfter('FortifyServiceProvider', 'JetstreamServiceProvider');
 
@@ -417,43 +414,43 @@ EOF;
         $this->installMiddlewareAfter('\App\Http\Middleware\HandleInertiaRequests::class', '\Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class');
 
         // Models...
-        copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
+        copy(__DIR__ . '/../../stubs/app/Models/User.php', app_path('Models/User.php'));
 
         // Factories...
-        copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
+        copy(__DIR__ . '/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
 
         // Actions...
-        copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Fortify/UpdateUserProfileInformation.php', app_path('Actions/Fortify/UpdateUserProfileInformation.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/DeleteUser.php', app_path('Actions/Jetstream/DeleteUser.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Fortify/UpdateUserProfileInformation.php', app_path('Actions/Fortify/UpdateUserProfileInformation.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Jetstream/DeleteUser.php', app_path('Actions/Jetstream/DeleteUser.php'));
 
         // Blade Views...
-        copy(__DIR__.'/../../stubs/inertia/resources/views/app.blade.php', resource_path('views/app.blade.php'));
+        copy(__DIR__ . '/../../stubs/inertia/resources/views/app.blade.php', resource_path('views/app.blade.php'));
 
         if (file_exists(resource_path('views/welcome.blade.php'))) {
             unlink(resource_path('views/welcome.blade.php'));
         }
 
         // Inertia Pages...
-        copy(__DIR__.'/../../stubs/inertia/resources/js/Pages/Dashboard.vue', resource_path('js/Pages/Dashboard.vue'));
-        copy(__DIR__.'/../../stubs/inertia/resources/js/Pages/PrivacyPolicy.vue', resource_path('js/Pages/PrivacyPolicy.vue'));
-        copy(__DIR__.'/../../stubs/inertia/resources/js/Pages/TermsOfService.vue', resource_path('js/Pages/TermsOfService.vue'));
-        copy(__DIR__.'/../../stubs/inertia/resources/js/Pages/Welcome.vue', resource_path('js/Pages/Welcome.vue'));
+        copy(__DIR__ . '/../../stubs/inertia/resources/js/Pages/Dashboard.svelte', resource_path('js/Pages/Dashboard.svelte'));
+        copy(__DIR__ . '/../../stubs/inertia/resources/js/Pages/PrivacyPolicy.svelte', resource_path('js/Pages/PrivacyPolicy.svelte'));
+        copy(__DIR__ . '/../../stubs/inertia/resources/js/Pages/TermsOfService.svelte', resource_path('js/Pages/TermsOfService.svelte'));
+        copy(__DIR__ . '/../../stubs/inertia/resources/js/Pages/Welcome.svelte', resource_path('js/Pages/Welcome.svelte'));
 
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Components', resource_path('js/Components'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Layouts', resource_path('js/Layouts'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Pages/API', resource_path('js/Pages/API'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Pages/Auth', resource_path('js/Pages/Auth'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Pages/Profile', resource_path('js/Pages/Profile'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia/resources/js/Components', resource_path('js/Components'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia/resources/js/Layouts', resource_path('js/Layouts'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia/resources/js/Pages/API', resource_path('js/Pages/API'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia/resources/js/Pages/Auth', resource_path('js/Pages/Auth'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia/resources/js/Pages/Profile', resource_path('js/Pages/Profile'));
 
         // Routes...
         $this->replaceInFile('auth:api', 'auth:sanctum', base_path('routes/api.php'));
 
-        copy(__DIR__.'/../../stubs/inertia/routes/web.php', base_path('routes/web.php'));
+        copy(__DIR__ . '/../../stubs/inertia/routes/web.php', base_path('routes/web.php'));
 
         // Assets...
-        copy(__DIR__.'/../../stubs/resources/css/app.css', resource_path('css/app.css'));
-        copy(__DIR__.'/../../stubs/inertia/resources/js/app.js', resource_path('js/app.js'));
+        copy(__DIR__ . '/../../stubs/resources/css/app.css', resource_path('css/app.css'));
+        copy(__DIR__ . '/../../stubs/inertia/resources/js/app.js', resource_path('js/app.js'));
 
         // Flush node_modules...
         // static::flushNodeModules();
@@ -461,14 +458,14 @@ EOF;
         // Tests...
         $stubs = $this->getTestStubsPath();
 
-        copy($stubs.'/inertia/ApiTokenPermissionsTest.php', base_path('tests/Feature/ApiTokenPermissionsTest.php'));
-        copy($stubs.'/inertia/BrowserSessionsTest.php', base_path('tests/Feature/BrowserSessionsTest.php'));
-        copy($stubs.'/inertia/CreateApiTokenTest.php', base_path('tests/Feature/CreateApiTokenTest.php'));
-        copy($stubs.'/inertia/DeleteAccountTest.php', base_path('tests/Feature/DeleteAccountTest.php'));
-        copy($stubs.'/inertia/DeleteApiTokenTest.php', base_path('tests/Feature/DeleteApiTokenTest.php'));
-        copy($stubs.'/inertia/ProfileInformationTest.php', base_path('tests/Feature/ProfileInformationTest.php'));
-        copy($stubs.'/inertia/TwoFactorAuthenticationSettingsTest.php', base_path('tests/Feature/TwoFactorAuthenticationSettingsTest.php'));
-        copy($stubs.'/inertia/UpdatePasswordTest.php', base_path('tests/Feature/UpdatePasswordTest.php'));
+        copy($stubs . '/inertia/ApiTokenPermissionsTest.php', base_path('tests/Feature/ApiTokenPermissionsTest.php'));
+        copy($stubs . '/inertia/BrowserSessionsTest.php', base_path('tests/Feature/BrowserSessionsTest.php'));
+        copy($stubs . '/inertia/CreateApiTokenTest.php', base_path('tests/Feature/CreateApiTokenTest.php'));
+        copy($stubs . '/inertia/DeleteAccountTest.php', base_path('tests/Feature/DeleteAccountTest.php'));
+        copy($stubs . '/inertia/DeleteApiTokenTest.php', base_path('tests/Feature/DeleteApiTokenTest.php'));
+        copy($stubs . '/inertia/ProfileInformationTest.php', base_path('tests/Feature/ProfileInformationTest.php'));
+        copy($stubs . '/inertia/TwoFactorAuthenticationSettingsTest.php', base_path('tests/Feature/TwoFactorAuthenticationSettingsTest.php'));
+        copy($stubs . '/inertia/UpdatePasswordTest.php', base_path('tests/Feature/UpdatePasswordTest.php'));
 
         // Teams...
         if ($this->option('teams')) {
@@ -479,11 +476,12 @@ EOF;
             $this->installInertiaSsrStack();
         }
 
-        if (! $this->option('dark')) {
-            $this->removeDarkClasses((new Finder)
-                ->in(resource_path('js'))
-                ->name('*.vue')
-                ->notPath('Pages/Welcome.vue')
+        if (!$this->option('dark')) {
+            $this->removeDarkClasses(
+                (new Finder)
+                    ->in(resource_path('js'))
+                    ->name('*.svelte')
+                    ->notPath('Pages/Welcome.svelte')
             );
         }
 
@@ -512,18 +510,18 @@ EOF;
         (new Filesystem)->ensureDirectoryExists(resource_path('js/Pages/Profile'));
 
         // Pages...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Pages/Teams', resource_path('js/Pages/Teams'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/inertia/resources/js/Pages/Teams', resource_path('js/Pages/Teams'));
 
         // Tests...
         $stubs = $this->getTestStubsPath();
 
-        copy($stubs.'/inertia/CreateTeamTest.php', base_path('tests/Feature/CreateTeamTest.php'));
-        copy($stubs.'/inertia/DeleteTeamTest.php', base_path('tests/Feature/DeleteTeamTest.php'));
-        copy($stubs.'/inertia/InviteTeamMemberTest.php', base_path('tests/Feature/InviteTeamMemberTest.php'));
-        copy($stubs.'/inertia/LeaveTeamTest.php', base_path('tests/Feature/LeaveTeamTest.php'));
-        copy($stubs.'/inertia/RemoveTeamMemberTest.php', base_path('tests/Feature/RemoveTeamMemberTest.php'));
-        copy($stubs.'/inertia/UpdateTeamMemberRoleTest.php', base_path('tests/Feature/UpdateTeamMemberRoleTest.php'));
-        copy($stubs.'/inertia/UpdateTeamNameTest.php', base_path('tests/Feature/UpdateTeamNameTest.php'));
+        copy($stubs . '/inertia/CreateTeamTest.php', base_path('tests/Feature/CreateTeamTest.php'));
+        copy($stubs . '/inertia/DeleteTeamTest.php', base_path('tests/Feature/DeleteTeamTest.php'));
+        copy($stubs . '/inertia/InviteTeamMemberTest.php', base_path('tests/Feature/InviteTeamMemberTest.php'));
+        copy($stubs . '/inertia/LeaveTeamTest.php', base_path('tests/Feature/LeaveTeamTest.php'));
+        copy($stubs . '/inertia/RemoveTeamMemberTest.php', base_path('tests/Feature/RemoveTeamMemberTest.php'));
+        copy($stubs . '/inertia/UpdateTeamMemberRoleTest.php', base_path('tests/Feature/UpdateTeamMemberRoleTest.php'));
+        copy($stubs . '/inertia/UpdateTeamNameTest.php', base_path('tests/Feature/UpdateTeamNameTest.php'));
 
         $this->ensureApplicationIsTeamCompatible();
     }
@@ -547,31 +545,31 @@ EOF;
         (new Filesystem)->ensureDirectoryExists(app_path('Policies'));
 
         // Service Providers...
-        copy(__DIR__.'/../../stubs/app/Providers/JetstreamWithTeamsServiceProvider.php', app_path('Providers/JetstreamServiceProvider.php'));
+        copy(__DIR__ . '/../../stubs/app/Providers/JetstreamWithTeamsServiceProvider.php', app_path('Providers/JetstreamServiceProvider.php'));
 
         // Models...
-        copy(__DIR__.'/../../stubs/app/Models/Membership.php', app_path('Models/Membership.php'));
-        copy(__DIR__.'/../../stubs/app/Models/Team.php', app_path('Models/Team.php'));
-        copy(__DIR__.'/../../stubs/app/Models/TeamInvitation.php', app_path('Models/TeamInvitation.php'));
-        copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.php', app_path('Models/User.php'));
+        copy(__DIR__ . '/../../stubs/app/Models/Membership.php', app_path('Models/Membership.php'));
+        copy(__DIR__ . '/../../stubs/app/Models/Team.php', app_path('Models/Team.php'));
+        copy(__DIR__ . '/../../stubs/app/Models/TeamInvitation.php', app_path('Models/TeamInvitation.php'));
+        copy(__DIR__ . '/../../stubs/app/Models/UserWithTeams.php', app_path('Models/User.php'));
 
         // Actions...
-        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/AddTeamMember.php', app_path('Actions/Jetstream/AddTeamMember.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/CreateTeam.php', app_path('Actions/Jetstream/CreateTeam.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/DeleteTeam.php', app_path('Actions/Jetstream/DeleteTeam.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/DeleteUserWithTeams.php', app_path('Actions/Jetstream/DeleteUser.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/InviteTeamMember.php', app_path('Actions/Jetstream/InviteTeamMember.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/RemoveTeamMember.php', app_path('Actions/Jetstream/RemoveTeamMember.php'));
-        copy(__DIR__.'/../../stubs/app/Actions/Jetstream/UpdateTeamName.php', app_path('Actions/Jetstream/UpdateTeamName.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Jetstream/AddTeamMember.php', app_path('Actions/Jetstream/AddTeamMember.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Jetstream/CreateTeam.php', app_path('Actions/Jetstream/CreateTeam.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Jetstream/DeleteTeam.php', app_path('Actions/Jetstream/DeleteTeam.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Jetstream/DeleteUserWithTeams.php', app_path('Actions/Jetstream/DeleteUser.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Jetstream/InviteTeamMember.php', app_path('Actions/Jetstream/InviteTeamMember.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Jetstream/RemoveTeamMember.php', app_path('Actions/Jetstream/RemoveTeamMember.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Jetstream/UpdateTeamName.php', app_path('Actions/Jetstream/UpdateTeamName.php'));
 
-        copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUserWithTeams.php', app_path('Actions/Fortify/CreateNewUser.php'));
+        copy(__DIR__ . '/../../stubs/app/Actions/Fortify/CreateNewUserWithTeams.php', app_path('Actions/Fortify/CreateNewUser.php'));
 
         // Policies...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/app/Policies', app_path('Policies'));
+        (new Filesystem)->copyDirectory(__DIR__ . '/../../stubs/app/Policies', app_path('Policies'));
 
         // Factories...
-        copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
-        copy(__DIR__.'/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
+        copy(__DIR__ . '/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
+        copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
     }
 
     /**
@@ -581,19 +579,13 @@ EOF;
      */
     protected function installInertiaSsrStack()
     {
-        $this->updateNodePackages(function ($packages) {
-            return [
-                '@vue/server-renderer' => '^3.2.31',
-            ] + $packages;
-        });
+        copy(__DIR__ . '/../../stubs/inertia/resources/js/ssr.js', resource_path('js/ssr.js'));
+        $this->replaceInFile("input: 'resources/js/app.js',", "input: 'resources/js/app.js'," . PHP_EOL . "            ssr: 'resources/js/ssr.js',", base_path('vite.config.js'));
 
-        copy(__DIR__.'/../../stubs/inertia/resources/js/ssr.js', resource_path('js/ssr.js'));
-        $this->replaceInFile("input: 'resources/js/app.js',", "input: 'resources/js/app.js',".PHP_EOL."            ssr: 'resources/js/ssr.js',", base_path('vite.config.js'));
-
-        copy(__DIR__.'/../../stubs/inertia/app/Http/Middleware/HandleInertiaRequests.php', app_path('Http/Middleware/HandleInertiaRequests.php'));
+        copy(__DIR__ . '/../../stubs/inertia/app/Http/Middleware/HandleInertiaRequests.php', app_path('Http/Middleware/HandleInertiaRequests.php'));
 
         $this->replaceInFile('vite build', 'vite build && vite build --ssr', base_path('package.json'));
-        $this->replaceInFile('/node_modules', '/bootstrap/ssr'.PHP_EOL.'/node_modules', base_path('.gitignore'));
+        $this->replaceInFile('/node_modules', '/bootstrap/ssr' . PHP_EOL . '/node_modules', base_path('.gitignore'));
     }
 
     /**
@@ -605,12 +597,15 @@ EOF;
      */
     protected function installServiceProviderAfter($after, $name)
     {
-        if (! Str::contains($appConfig = file_get_contents(config_path('app.php')), 'App\\Providers\\'.$name.'::class')) {
-            file_put_contents(config_path('app.php'), str_replace(
-                'App\\Providers\\'.$after.'::class,',
-                'App\\Providers\\'.$after.'::class,'.PHP_EOL.'        App\\Providers\\'.$name.'::class,',
-                $appConfig
-            ));
+        if (!Str::contains($appConfig = file_get_contents(config_path('app.php')), 'App\\Providers\\' . $name . '::class')) {
+            file_put_contents(
+                config_path('app.php'),
+                str_replace(
+                    'App\\Providers\\' . $after . '::class,',
+                    'App\\Providers\\' . $after . '::class,' . PHP_EOL . '        App\\Providers\\' . $name . '::class,',
+                    $appConfig
+                )
+            );
         }
     }
 
@@ -629,18 +624,21 @@ EOF;
         $middlewareGroups = Str::before(Str::after($httpKernel, '$middlewareGroups = ['), '];');
         $middlewareGroup = Str::before(Str::after($middlewareGroups, "'$group' => ["), '],');
 
-        if (! Str::contains($middlewareGroup, $name)) {
+        if (!Str::contains($middlewareGroup, $name)) {
             $modifiedMiddlewareGroup = str_replace(
-                $after.',',
-                $after.','.PHP_EOL.'            '.$name.',',
+                $after . ',',
+                $after . ',' . PHP_EOL . '            ' . $name . ',',
                 $middlewareGroup,
             );
 
-            file_put_contents(app_path('Http/Kernel.php'), str_replace(
-                $middlewareGroups,
-                str_replace($middlewareGroup, $modifiedMiddlewareGroup, $middlewareGroups),
-                $httpKernel
-            ));
+            file_put_contents(
+                app_path('Http/Kernel.php'),
+                str_replace(
+                    $middlewareGroups,
+                    str_replace($middlewareGroup, $modifiedMiddlewareGroup, $middlewareGroups),
+                    $httpKernel
+                )
+            );
         }
     }
 
@@ -652,8 +650,8 @@ EOF;
     protected function getTestStubsPath()
     {
         return $this->option('pest') || $this->isUsingPest()
-            ? __DIR__.'/../../stubs/pest-tests'
-            : __DIR__.'/../../stubs/tests';
+            ? __DIR__ . '/../../stubs/pest-tests'
+            : __DIR__ . '/../../stubs/tests';
     }
 
     /**
@@ -689,7 +687,7 @@ EOF;
             is_array($packages) ? $packages : func_get_args()
         );
 
-        return ! (new Process($command, base_path(), ['COMPOSER_MEMORY_LIMIT' => '-1']))
+        return !(new Process($command, base_path(), ['COMPOSER_MEMORY_LIMIT' => '-1']))
             ->setTimeout(null)
             ->run(function ($type, $output) {
                 $this->output->write($output);
@@ -757,7 +755,7 @@ EOF;
      */
     protected static function updateNodePackages(callable $callback, $dev = true)
     {
-        if (! file_exists(base_path('package.json'))) {
+        if (!file_exists(base_path('package.json'))) {
             return;
         }
 
@@ -774,7 +772,7 @@ EOF;
 
         file_put_contents(
             base_path('package.json'),
-            json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT).PHP_EOL
+            json_encode($packages, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL
         );
     }
 
@@ -844,12 +842,12 @@ EOF;
             try {
                 $process->setTty(true);
             } catch (RuntimeException $e) {
-                $this->output->writeln('  <bg=yellow;fg=black> WARN </> '.$e->getMessage().PHP_EOL);
+                $this->output->writeln('  <bg=yellow;fg=black> WARN </> ' . $e->getMessage() . PHP_EOL);
             }
         }
 
         $process->run(function ($type, $line) {
-            $this->output->write('    '.$line);
+            $this->output->write('    ' . $line);
         });
     }
 
@@ -861,11 +859,10 @@ EOF;
     protected function promptForMissingArgumentsUsing()
     {
         return [
-            'stack' => fn () => select(
+            'stack' => fn() => select(
                 label: 'Which Jetstream stack would you like to install?',
                 options: [
-                    'inertia' => 'Vue with Inertia',
-                    'livewire' => 'Livewire',
+                    'inertia' => 'Svelte with Inertia',
                 ]
             ),
         ];
@@ -880,23 +877,25 @@ EOF;
      */
     protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output)
     {
-        collect(multiselect(
-            label: 'Would you like any optional features?',
-            options: collect([
-                'teams' => 'Team support',
-                'api' => 'API support',
-                'verification' => 'Email verification',
-                'dark' => 'Dark mode',
-            ])->when(
-                $input->getArgument('stack') === 'inertia',
-                fn ($options) => $options->put('ssr', 'Inertia SSR')
-            )->sort()->all(),
-        ))->each(fn ($option) => $input->setOption($option, true));
+        collect(
+            multiselect(
+                label: 'Would you like any optional features?',
+                options: collect([
+                    'teams' => 'Team support',
+                    'api' => 'API support',
+                    'verification' => 'Email verification',
+                    'dark' => 'Dark mode',
+                ])->when(
+                        $input->getArgument('stack') === 'inertia',
+                        fn($options) => $options->put('ssr', 'Inertia SSR')
+                    )->sort()->all(),
+            )
+        )->each(fn($option) => $input->setOption($option, true));
 
         $input->setOption('pest', select(
             label: 'Which testing framework do you prefer?',
-            options: ['PHPUnit', 'Pest'],
-            default: $this->isUsingPest() ? 'Pest' : 'PHPUnit',
+            options: ['PHPUnit', 'Pest'], default
+            : $this->isUsingPest() ? 'Pest' : 'PHPUnit',
         ) === 'Pest');
     }
 
