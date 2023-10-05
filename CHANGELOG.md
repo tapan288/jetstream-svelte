@@ -1,6 +1,30 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/jetstream/compare/v3.3.1...3.x)
+## [Unreleased](https://github.com/laravel/jetstream/compare/v4.0.3...4.x)
+
+## [v4.0.3](https://github.com/laravel/jetstream/compare/v4.0.2...v4.0.3) - 2023-10-02
+
+- [4.x] Remove outdated session migration check by [@jessarcher](https://github.com/jessarcher) in https://github.com/laravel/jetstream/pull/1385
+
+## [v4.0.2](https://github.com/laravel/jetstream/compare/v4.0.1...v4.0.2) - 2023-09-19
+
+- Prevent calling Inertia before it's installed by [@jrd-lewis](https://github.com/jrd-lewis) in https://github.com/laravel/jetstream/pull/1376
+
+## [v4.0.1](https://github.com/laravel/jetstream/compare/v4.0.0...v4.0.1) - 2023-08-27
+
+- Replace `array_merge` with spread operator in `HandleInertiaRequests` by [@osbre](https://github.com/osbre) in https://github.com/laravel/jetstream/pull/1370
+
+## [v4.0.0](https://github.com/laravel/jetstream/compare/v3.3.3...v4.0.0) - 2023-08-24
+
+- Livewire `v3.x` support in https://github.com/laravel/jetstream/pull/1360
+
+## [v3.3.3](https://github.com/laravel/jetstream/compare/v3.3.2...v3.3.3) - 2023-08-23
+
+- Fix memory leak and potential caching issue in https://github.com/laravel/jetstream/pull/1366
+
+## [v3.3.2](https://github.com/laravel/jetstream/compare/v3.3.1...v3.3.2) - 2023-08-21
+
+- Remove redundant v-if from menu by [@itbm](https://github.com/itbm) in https://github.com/laravel/jetstream/pull/1362
 
 ## [v3.3.1](https://github.com/laravel/jetstream/compare/v3.3.0...v3.3.1) - 2023-08-14
 

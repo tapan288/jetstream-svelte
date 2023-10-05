@@ -130,12 +130,10 @@ class InstallCommand extends Command implements PromptsForMissingInput
      */
     protected function configureSession()
     {
-        if (!class_exists('CreateSessionsTable')) {
-            try {
-                $this->call('session:table');
-            } catch (Exception $e) {
-                //
-            }
+        try {
+            $this->call('session:table');
+        } catch (Exception $e) {
+            //
         }
 
         $this->replaceInFile("'SESSION_DRIVER', 'file'", "'SESSION_DRIVER', 'database'", config_path('session.php'));
@@ -151,7 +149,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
     protected function installLivewireStack()
     {
         // Install Livewire...
-        if (!$this->requireComposerPackages('livewire/livewire:^2.11')) {
+        if (!$this->requireComposerPackages('livewire/livewire:^3.0')) {
             return false;
         }
 
@@ -171,8 +169,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
             return [
                 '@tailwindcss/forms' => '^0.5.2',
                 '@tailwindcss/typography' => '^0.5.0',
-                'alpinejs' => '^3.0.6',
-                '@alpinejs/focus' => '^3.10.5',
                 'autoprefixer' => '^10.4.7',
                 'postcss' => '^8.4.14',
                 'tailwindcss' => '^3.1.0',
@@ -247,7 +243,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
         // Assets...
         copy(__DIR__ . '/../../stubs/resources/css/app.css', resource_path('css/app.css'));
-        copy(__DIR__ . '/../../stubs/livewire/resources/js/app.js', resource_path('js/app.js'));
 
         // Tests...
         $stubs = $this->getTestStubsPath();
@@ -894,7 +889,8 @@ EOF;
 
         $input->setOption('pest', select(
             label: 'Which testing framework do you prefer?',
-            options: ['PHPUnit', 'Pest'], default
+            options: ['PHPUnit', 'Pest'],
+        default
             : $this->isUsingPest() ? 'Pest' : 'PHPUnit',
         ) === 'Pest');
     }
