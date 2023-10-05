@@ -64,14 +64,14 @@
                 <TextInput
                     id="code"
                     ref="codeInput"
-                    bind:value={$$form.code}
+                    bind:value={$form.code}
                     type="text"
                     inputmode="numeric"
                     class="mt-1 block w-full"
                     autofocus
                     autocomplete="one-time-code"
                 />
-                <InputError class="mt-2" message={$$form.errors.code} />
+                <InputError class="mt-2" message={$form.errors.code} />
             </div>
         {:else}
             <div>
@@ -79,12 +79,12 @@
                 <TextInput
                     id="recovery_code"
                     ref="recoveryCodeInput"
-                    bind:value={$$form.recovery_code}
+                    bind:value={$form.recovery_code}
                     type="text"
                     class="mt-1 block w-full"
                     autocomplete="one-time-code"
                 />
-                <InputError class="mt-2" message={$$form.errors.recovery_code} />
+                <InputError class="mt-2" message={$form.errors.recovery_code} />
             </div>
         {/if}
 
@@ -102,9 +102,8 @@
             </button>
 
             <PrimaryButton
-                class="ml-4"
-                class:opacity-25={$$form.processing}
-                disabled={$$form.processing}
+                class="ml-4 {$form.processing ? 'opacity-25' : ''}"
+                disabled={$form.processing}
             >
                 Log in
             </PrimaryButton>

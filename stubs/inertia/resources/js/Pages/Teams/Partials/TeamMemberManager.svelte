@@ -161,16 +161,18 @@
                                             role.key)}
                                     >
                                         <div
-                                            class:opacity-50={addTeamMemberForm.role &&
-                                                addTeamMemberForm.role !=
-                                                    role.key}
+                                            class={addTeamMemberForm.role &&
+                                            addTeamMemberForm.role != role.key
+                                                ? "opacity-25"
+                                                : ""}
                                         >
                                             <!-- Role Name -->
                                             <div class="flex items-center">
                                                 <div
-                                                    class="text-sm text-gray-600 dark:text-gray-400"
-                                                    class:font-semibold={addTeamMemberForm.role ==
-                                                        role.key}
+                                                    class="text-sm text-gray-600 dark:text-gray-400 {addTeamMemberForm.role ==
+                                                    role.key
+                                                        ? 'font-semibold'
+                                                        : ''}"
                                                 >
                                                     {role.name}
                                                 </div>
@@ -216,7 +218,7 @@
                     </ActionMessage>
 
                     <PrimaryButton
-                        class:opacity-25={addTeamMemberForm.processing}
+                        class={addTeamMemberForm.processing ? "opacity-25" : ""}
                         disabled={addTeamMemberForm.processing}
                     >
                         Add
@@ -373,15 +375,18 @@
                                 on:click={(updateRoleForm.role = role.key)}
                             >
                                 <div
-                                    class:opacity-25={updateRoleForm.role &&
-                                        updateRoleForm.role !== role.key}
+                                    class={updateRoleForm.role &&
+                                    updateRoleForm.role !== role.key
+                                        ? "opacity-25"
+                                        : ""}
                                 >
                                     <!-- Role Name -->
                                     <div class="flex items-center">
                                         <div
-                                            class="text-sm text-gray-600 dark:text-gray-400"
-                                            class:font-semibold={updateRoleForm.role ===
-                                                role.key}
+                                            class="text-sm text-gray-600 dark:text-gray-400 {updateRoleForm.role ===
+                                            role.key
+                                                ? 'font-semibold'
+                                                : ''}"
                                         >
                                             {role.name}
                                         </div>
@@ -424,8 +429,7 @@
             </SecondaryButton>
 
             <PrimaryButton
-                class="ml-3"
-                class:opacity-25={updateRoleForm.processing}
+                class="ml-3 {updateRoleForm.processing ? 'opacity-25' : ''}"
                 disabled={updateRoleForm.processing}
                 on:click={updateRole}
             >
@@ -452,8 +456,7 @@
             </SecondaryButton>
 
             <DangerButton
-                class="ml-3"
-                class:opacity-25={leaveTeamForm.processing}
+                class="ml-3 {leaveTeamForm.processing ? 'opacity-25' : ''}"
                 disabled={leaveTeamForm.processing}
                 on:click={leaveTeam}
             >
@@ -479,8 +482,9 @@
             </SecondaryButton>
 
             <DangerButton
-                class="ml-3"
-                class:opacity-25={removeTeamMemberForm.processing}
+                class="ml-3 {removeTeamMemberForm.processing
+                    ? 'opacity-25'
+                    : ''}"
                 disabled={removeTeamMemberForm.processing}
                 on:click={removeTeamMember}
             >

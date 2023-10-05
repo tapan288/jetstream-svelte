@@ -51,12 +51,12 @@
             <TextInput
                 id="current_password"
                 bind:this={currentPasswordInput}
-                bind:value={$$form.current_password}
+                bind:value={$form.current_password}
                 type="password"
                 class="mt-1 block w-full"
                 autocomplete="current-password"
             />
-            <InputError message={$$form.errors.current_password} class="mt-2" />
+            <InputError message={$form.errors.current_password} class="mt-2" />
         </div>
 
         <div class="col-span-6 sm:col-span-4">
@@ -64,38 +64,38 @@
             <TextInput
                 id="password"
                 bind:this={passwordInput}
-                bind:value={$$form.password}
+                bind:value={$form.password}
                 type="password"
                 class="mt-1 block w-full"
                 autocomplete="new-password"
             />
-            <InputError message={$$form.errors.password} class="mt-2" />
+            <InputError message={$form.errors.password} class="mt-2" />
         </div>
 
         <div class="col-span-6 sm:col-span-4">
             <InputLabel for="password_confirmation" value="Confirm Password" />
             <TextInput
                 id="password_confirmation"
-                bind:value={$$form.password_confirmation}
+                bind:value={$form.password_confirmation}
                 type="password"
                 class="mt-1 block w-full"
                 autocomplete="new-password"
             />
             <InputError
-                message={$$form.errors.password_confirmation}
+                message={$form.errors.password_confirmation}
                 class="mt-2"
             />
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="actions">
-        <ActionMessage on={$$form.recentlySuccessful} class="mr-3">
+        <ActionMessage on={$form.recentlySuccessful} class="mr-3">
             Saved.
         </ActionMessage>
 
         <PrimaryButton
-            class:opacity-25={$$form.processing}
-            disabled={$$form.processing}
+            class={$form.processing ? "opacity-25" : ""}
+            disabled={$form.processing}
         >
             Save
         </PrimaryButton>

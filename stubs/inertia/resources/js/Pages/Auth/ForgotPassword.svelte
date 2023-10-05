@@ -46,7 +46,7 @@
             <InputLabel for="email" value="Email" />
             <TextInput
                 id="email"
-                bind:value={$$form.email}
+                bind:value={$form.email}
                 type="email"
                 class="mt-1 block w-full"
                 required
@@ -58,7 +58,7 @@
 
         <div class="flex items-center justify-end mt-4">
             <PrimaryButton
-                class:opacity-25={$form.processing}
+                class={$form.processing ? "opacity-25" : ""}
                 disabled={$form.processing}
             >
                 Email Password Reset Link

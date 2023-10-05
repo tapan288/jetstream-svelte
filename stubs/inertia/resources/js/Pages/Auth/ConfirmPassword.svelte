@@ -44,7 +44,7 @@
             <TextInput
                 id="password"
                 bind:this={passwordInput}
-                bind:value={$$form.password}
+                bind:value={$form.password}
                 type="password"
                 class="mt-1 block w-full"
                 required
@@ -56,8 +56,7 @@
 
         <div class="flex justify-end mt-4">
             <PrimaryButton
-                class="ml-4"
-                class:opacity-25={$form.processing}
+                class="ml-4 {$form.processing ? 'opacity-25' : ''}"
                 disabled={$form.processing}
             >
                 Confirm

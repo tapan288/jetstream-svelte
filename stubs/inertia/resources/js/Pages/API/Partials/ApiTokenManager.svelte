@@ -265,8 +265,7 @@
             </SecondaryButton>
 
             <PrimaryButton
-                class="ml-3"
-                class:opacity-25={updateApiTokenForm.processing}
+                class="ml-3 {updateApiTokenForm.processing ? 'opacity-25' : ''}"
                 disabled={updateApiTokenForm.processing}
                 on:click={updateApiToken}
             >
@@ -292,8 +291,7 @@
             </SecondaryButton>
 
             <DangerButton
-                class="ml-3"
-                class:opacity-25={updateApiTokenForm.processing}
+                class="ml-3 {updateApiTokenForm.processing ? 'opacity-25' : ''}"
                 disabled={deleteApiTokenForm.processing}
                 on:click={deleteApiToken}
             >

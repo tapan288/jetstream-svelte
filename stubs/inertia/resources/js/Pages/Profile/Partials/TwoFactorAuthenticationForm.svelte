@@ -234,7 +234,7 @@
                         >
                             <PrimaryButton
                                 type="button"
-                                class:opacity-25={enabling}
+                                class={enabling ? "opacity-25" : ""}
                                 disabled={enabling}
                             >
                                 Enable
@@ -249,8 +249,7 @@
                             {#if confirming}
                                 <PrimaryButton
                                     type="button"
-                                    class="mr-3"
-                                    class:opacity-25={enabling}
+                                    class="mr-3 {enabling ? 'opacity-25' : ''}"
                                     disabled={enabling}
                                 >
                                     Confirm
@@ -280,7 +279,7 @@
                         >
                             {#if confirming}
                                 <SecondaryButton
-                                    class:opacity-25={disabling}
+                                    class={disabling ? "opacity-25" : ""}
                                     disabled={disabling}
                                 >
                                     Cancel
@@ -293,7 +292,7 @@
                         >
                             {#if !confirming}
                                 <DangerButton
-                                    class:opacity-25={disabling}
+                                    class={disabling ? "opacity-25" : ""}
                                     disabled={disabling}
                                 >
                                     Disable

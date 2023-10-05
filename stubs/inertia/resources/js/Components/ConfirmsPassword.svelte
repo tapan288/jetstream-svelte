@@ -96,8 +96,7 @@
             <SecondaryButton on:click={closeModal}>Cancel</SecondaryButton>
 
             <PrimaryButton
-                class="ml-3"
-                class:opacity-25={$form.processing}
+                class="ml-3 {$form.processing ? 'opacity-25' : ''}"
                 disabled={$form.processing}
                 on:click={confirmPassword}
             >

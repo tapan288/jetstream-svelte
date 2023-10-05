@@ -51,32 +51,32 @@
             <InputLabel for="email" value="Email" />
             <TextInput
                 id="email"
-                bind:value={$$form.email}
+                bind:value={$form.email}
                 type="email"
                 class="mt-1 block w-full"
                 required
                 autofocus
                 autocomplete="username"
             />
-            <InputError class="mt-2" message={$$form.errors.email} />
+            <InputError class="mt-2" message={$form.errors.email} />
         </div>
 
         <div class="mt-4">
             <InputLabel for="password" value="Password" />
             <TextInput
                 id="password"
-                bind:value={$$form.password}
+                bind:value={$form.password}
                 type="password"
                 class="mt-1 block w-full"
                 required
                 autocomplete="current-password"
             />
-            <InputError class="mt-2" message={$$form.errors.password} />
+            <InputError class="mt-2" message={$form.errors.password} />
         </div>
 
         <div class="block mt-4">
             <label class="flex items-center">
-                <Checkbox bind:checked={$$form.remember} name="remember" />
+                <Checkbox bind:checked={$form.remember} name="remember" />
                 <span class="ml-2 text-sm text-gray-600 dark:text-gray-400"
                     >Remember me</span
                 >
@@ -94,9 +94,8 @@
             {/if}
 
             <PrimaryButton
-                class="ml-4"
-                class:opacity-25={$$form.processing}
-                disabled={$$form.processing}
+                class="ml-4 {$form.processing ? 'opacity-25' : ''}"
+                disabled={$form.processing}
             >
                 Log in
             </PrimaryButton>

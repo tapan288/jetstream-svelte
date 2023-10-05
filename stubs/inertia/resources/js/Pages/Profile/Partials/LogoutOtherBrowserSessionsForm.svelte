@@ -131,7 +131,7 @@
                 Log Out Other Browser Sessions
             </PrimaryButton>
 
-            <ActionMessage on={$$form.recentlySuccessful} class="ml-3">
+            <ActionMessage on={$form.recentlySuccessful} class="ml-3">
                 Done.
             </ActionMessage>
         </div>
@@ -149,7 +149,7 @@
                 <div class="mt-4">
                     <TextInput
                         bind:this={passwordInput}
-                        bind:value={$$form.password}
+                        bind:value={$form.password}
                         type="password"
                         class="mt-1 block w-3/4"
                         placeholder="Password"
@@ -157,7 +157,7 @@
                         on:keyup.enter={logoutOtherBrowserSessions}
                     />
 
-                    <InputError message={$$form.errors.password} class="mt-2" />
+                    <InputError message={$form.errors.password} class="mt-2" />
                 </div>
             </svelte:fragment>
 
@@ -165,9 +165,8 @@
                 <SecondaryButton on:click={closeModal}>Cancel</SecondaryButton>
 
                 <PrimaryButton
-                    class="ml-3"
-                    class:opacity-25={$$form.processing}
-                    disabled={$$form.processing}
+                    class="ml-3 {$form.processing ? 'opacity-25' : ''}"
+                    disabled={$form.processing}
                     on:click={logoutOtherBrowserSessions}
                 >
                     Log Out Other Browser Sessions

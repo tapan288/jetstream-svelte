@@ -70,7 +70,7 @@
                 <div class="mt-4">
                     <TextInput
                         bind:this={passwordInput}
-                        bind:value={$$form.password}
+                        bind:value={$form.password}
                         type="password"
                         class="mt-1 block w-3/4"
                         placeholder="Password"
@@ -78,7 +78,7 @@
                         on:keyup.enter={deleteUser}
                     />
 
-                    <InputError message={$$form.errors.password} class="mt-2" />
+                    <InputError message={$form.errors.password} class="mt-2" />
                 </div>
             </svelte:fragment>
 
@@ -86,9 +86,8 @@
                 <SecondaryButton on:click={closeModal}>Cancel</SecondaryButton>
 
                 <DangerButton
-                    class="ml-3"
-                    class:opacity-25={$form.processing}
-                    disabled={$$form.processing}
+                    class="ml-3 {$form.processing ? 'opacity-25' : ''}"
+                    disabled={$form.processing}
                     on:click={deleteUser}
                 >
                     Delete Account

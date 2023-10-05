@@ -51,19 +51,19 @@
             <InputLabel for="name" value="Team Name" />
             <TextInput
                 id="name"
-                bind:value={$$form.name}
+                bind:value={$form.name}
                 type="text"
                 class="block w-full mt-1"
                 autofocus
             />
-            <InputError message={$$form.errors.name} class="mt-2" />
+            <InputError message={$form.errors.name} class="mt-2" />
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="actions">
         <PrimaryButton
-            class:opacity-25={$$form.processing}
-            disabled={$$form.processing}
+            class={$form.processing ? "opacity-25" : ""}
+            disabled={$form.processing}
         >
             Create
         </PrimaryButton>

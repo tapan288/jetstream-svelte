@@ -353,14 +353,14 @@ EOF;
         // Install NPM packages...
         $this->updateNodePackages(function ($packages) {
             return [
-                // '@inertiajs/vue3' => '^1.0.0',
+                '@inertiajs/svelte' => '^1.0.0',
+                '@sveltejs/vite-plugin-svelte' => '^2.0.2',
+                'svelte' => '^3.55.1',
                 '@tailwindcss/forms' => '^0.5.2',
                 '@tailwindcss/typography' => '^0.5.2',
-                // '@vitejs/plugin-vue' => '^4.0.0',
                 'autoprefixer' => '^10.4.7',
                 'postcss' => '^8.4.14',
                 'tailwindcss' => '^3.1.0',
-                // 'vue' => '^3.2.31',
             ] + $packages;
         });
 

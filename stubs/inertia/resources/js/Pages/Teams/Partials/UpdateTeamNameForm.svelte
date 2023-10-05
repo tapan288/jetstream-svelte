@@ -57,25 +57,25 @@
 
             <TextInput
                 id="name"
-                bind:value={$$form.name}
+                bind:value={$form.name}
                 type="text"
                 class="mt-1 block w-full"
                 disabled={!permissions.canUpdateTeam}
             />
 
-            <InputError message={$$form.errors.name} class="mt-2" />
+            <InputError message={$form.errors.name} class="mt-2" />
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="actions">
         {#if permissions.canUpdateTeam}
-            <ActionMessage on={$$form.recentlySuccessful} class="mr-3">
+            <ActionMessage on={$form.recentlySuccessful} class="mr-3">
                 Saved.
             </ActionMessage>
 
             <PrimaryButton
-                class:opacity-25={$$form.processing}
-                disabled={$$form.processing}
+                class={$form.processing ? "opacity-25" : ""}
+                disabled={$form.processing}
             >
                 Save
             </PrimaryButton>
